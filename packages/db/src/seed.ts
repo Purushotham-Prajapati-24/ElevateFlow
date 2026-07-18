@@ -2,7 +2,8 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { users, accounts } from "./schema/index";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
+import { hashPassword } from "better-auth/crypto";
 
 /**
  * Seed script for ElevateFlow development.
@@ -10,7 +11,7 @@ import { eq } from "drizzle-orm";
  * Creates 4 users with fixed roles and the password "password123".
  * Better Auth stores passwords in the `account` table with provider "credential".
  *
- * This script is idempotent — it checks for existing users before inserting.
+ * This script is idempotent — it checks for existing users and updates their password hash.
  */
 
 const connectionString = process.env.DATABASE_URL;
@@ -20,22 +21,6 @@ if (!connectionString) {
 
 const client = postgres(connectionString);
 const db = drizzle(client);
-
-/**
- * Hash password using scrypt (Better Auth's default algorithm).
- * This matches Better Auth's internal hashing so seeded users can log in.
- *
- * Better Auth uses the format: hash:salt
- */
-async function hashPassword(password: string): Promise<string> {
-  const { scrypt, randomBytes } = await import("node:crypto");
-  const { promisify } = await import("node:util");
-  const scryptAsync = promisify(scrypt);
-
-  const salt = randomBytes(16).toString("hex");
-  const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
-  return `${derivedKey.toString("hex")}:${salt}`;
-}
 
 interface SeedUser {
   email: string;
@@ -81,7 +66,36 @@ async function seed() {
       .limit(1);
 
     if (existing.length > 0) {
-      console.log(`  ⏭️  ${seedUser.name} (${seedUser.email}) — already exists`);
+      const user = existing[0];
+      if (!user) continue;
+
+      const existingAccount = await db
+        .select()
+        .from(accounts)
+        .where(
+          and(
+            eq(accounts.userId, user.id),
+            eq(accounts.providerId, "credential"),
+          ),
+        )
+        .limit(1);
+
+      const acc = existingAccount[0];
+      if (acc) {
+        await db
+          .update(accounts)
+          .set({ password: hashedPassword })
+          .where(eq(accounts.id, acc.id));
+      } else {
+        await db.insert(accounts).values({
+          id: crypto.randomUUID(),
+          userId: user.id,
+          accountId: user.id,
+          providerId: "credential",
+          password: hashedPassword,
+        });
+      }
+      console.log(`  🔄 ${seedUser.name} (${seedUser.email}) — updated password hash`);
       continue;
     }
 
@@ -101,6 +115,7 @@ async function seed() {
 
     // Create the credential account entry (Better Auth pattern)
     await db.insert(accounts).values({
+      id: crypto.randomUUID(),
       userId: insertedUser.id,
       accountId: insertedUser.id,
       providerId: "credential",

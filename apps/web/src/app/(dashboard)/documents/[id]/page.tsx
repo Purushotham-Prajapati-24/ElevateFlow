@@ -111,6 +111,7 @@ export default async function DocumentDetailPage({
 
   const events: AuditEventWithActor[] = eventsData.map((e) => ({
     ...e,
+    action: e.action as any,
     prevStatus: e.prevStatus as DocumentStatus | null,
     newStatus: e.newStatus as DocumentStatus | null,
   }));
@@ -120,7 +121,7 @@ export default async function DocumentDetailPage({
       {/* Header breadcrumb & Actions */}
       <div className="space-y-4 border-b border-[#27272a] pb-6">
         <Link
-          href="/documents"
+          href={"/documents" as any}
           className="text-xs font-mono text-[#a1a1aa] hover:text-[#fafafa] transition-colors inline-block"
         >
           ← Back to Documents
@@ -130,7 +131,7 @@ export default async function DocumentDetailPage({
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold text-[#fafafa]">{doc.title}</h1>
-              <StatusBadge status={doc.status} />
+              <StatusBadge status={doc.status as DocumentStatus} />
             </div>
 
             <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-[#a1a1aa]">
@@ -146,7 +147,7 @@ export default async function DocumentDetailPage({
           <DocumentActions
             documentId={doc.id}
             version={doc.version}
-            status={doc.status}
+            status={doc.status as DocumentStatus}
             authorId={doc.authorId}
             currentUser={user}
             title={doc.title}

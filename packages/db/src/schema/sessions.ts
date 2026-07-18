@@ -17,7 +17,7 @@ import { users } from "./users";
 export const sessions = pgTable(
   "session",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
+    id: text("id").primaryKey(),
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id),
@@ -43,7 +43,7 @@ export const sessions = pgTable(
  * Required by Better Auth for credential providers.
  */
 export const accounts = pgTable("account", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: text("id").primaryKey(),
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id),
@@ -73,7 +73,7 @@ export const accounts = pgTable("account", {
  * Used for email verification tokens, password reset tokens, etc.
  */
 export const verifications = pgTable("verification", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),

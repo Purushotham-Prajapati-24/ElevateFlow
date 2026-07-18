@@ -51,7 +51,7 @@ export default async function DocumentsPage() {
 
         {user.role === "author" && (
           <Link
-            href="/documents/new"
+            href={"/documents/new" as any}
             className="px-4 py-2 bg-[#f59e0b] hover:bg-[#fbbf24] text-[#09090b] font-medium text-xs rounded-md transition-colors shadow-md shadow-[#f59e0b]/10 inline-flex items-center gap-1.5 self-start sm:self-auto"
           >
             <span>+</span> Create Document
@@ -75,14 +75,14 @@ export default async function DocumentsPage() {
           {docs.map((doc) => (
             <Link
               key={doc.id}
-              href={`/documents/${doc.id}`}
+              href={`/documents/${doc.id}` as any}
               className="group bg-[#18181b] hover:bg-[#1f1f23] border border-[#27272a] hover:border-[#3f3f46] rounded-xl p-5 transition-all space-y-3 block"
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <h3 className="text-base font-semibold text-[#fafafa] group-hover:text-[#f59e0b] transition-colors">
                   {doc.title}
                 </h3>
-                <StatusBadge status={doc.status} />
+                <StatusBadge status={doc.status as any} />
               </div>
 
               <p className="text-xs text-[#a1a1aa] line-clamp-2 leading-relaxed">

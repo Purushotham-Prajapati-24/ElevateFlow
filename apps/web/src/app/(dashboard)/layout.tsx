@@ -73,7 +73,7 @@ export default async function DashboardLayout({
             {/* Author Nav */}
             {(user.role === "author" || user.role === "admin") && (
               <Link
-                href="/documents"
+                href={"/documents" as any}
                 className="flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-md text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#27272a] transition-colors"
               >
                 <span>📄</span> My Documents
@@ -83,7 +83,7 @@ export default async function DashboardLayout({
             {/* Reviewer Nav */}
             {(user.role === "reviewer" || user.role === "admin") && (
               <Link
-                href="/review"
+                href={"/review" as any}
                 className="flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-md text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#27272a] transition-colors"
               >
                 <span>🔍</span> Review Queue
@@ -92,7 +92,7 @@ export default async function DashboardLayout({
 
             {/* All Roles Nav */}
             <Link
-              href="/published"
+              href={"/published" as any}
               className="flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-md text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#27272a] transition-colors"
             >
               <span>📚</span> Published Library
@@ -101,7 +101,7 @@ export default async function DashboardLayout({
             {/* Admin Nav */}
             {user.role === "admin" && (
               <Link
-                href="/admin"
+                href={"/admin" as any}
                 className="flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-md text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#27272a] transition-colors"
               >
                 <span>⚙️</span> Admin Console

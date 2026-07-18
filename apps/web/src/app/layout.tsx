@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { AgentationProvider } from "@/components/agentation-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -28,7 +29,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
       <body className="bg-[#09090b] text-[#fafafa] antialiased selection:bg-[#f59e0b] selection:text-[#09090b]">
         {children}
+        <AgentationProvider />
       </body>
     </html>
   );
 }
+
