@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #f59e0b;
+    --primary-hover: #fbbf24;
+    --primary-muted: #92400e;
+    --on-primary: #09090b;
+
+    --ink: #fafafa;
+    --ink-muted: #a1a1aa;
+    --ink-subtle: #71717a;
+    --ink-disabled: #52525b;
+
+    --canvas: #09090b;
+    --surface-1: #18181b;
+    --surface-2: #1f1f23;
+    --surface-3: #27272a;
+    --surface-4: #2e2e33;
+
+    --hairline: #27272a;
+    --hairline-strong: #3f3f46;
+    --hairline-focus: #f59e0b;
+
+    --state-draft: #94a3b8;
+    --state-draft-bg: #1e293b;
+    --state-submitted: #3b82f6;
+    --state-submitted-bg: #1e3a5f;
+    --state-approved: #10b981;
+    --state-approved-bg: #064e3b;
+    --state-rejected: #f43f5e;
+    --state-rejected-bg: #4c0519;
+    --state-published: #8b5cf6;
+    --state-published-bg: #2e1065;
+    --state-archived: #71717a;
+    --state-archived-bg: #27272a;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+}
+
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Custom glow utility */
+.hero-glow {
+  background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.15), rgba(9, 9, 11, 0) 70%);
+}
