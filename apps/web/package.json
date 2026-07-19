@@ -15,6 +15,7 @@
     "@elevateflow/types": "workspace:*",
     "@elevateflow/ui": "workspace:*",
     "@elevateflow/validators": "workspace:*",
+    "@gsap/react": "^2.1.2",
     "better-auth": "^1.1.18",
     "drizzle-orm": "^0.44.0",
     "geist": "^1.7.2",
