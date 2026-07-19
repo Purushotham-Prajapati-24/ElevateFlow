@@ -44,17 +44,17 @@ export default function Home() {
 
           {/* Headline — Geist display with MagneticText */}
           <h1 className="font-display text-[clamp(36px,4.5vw,58px)] font-semibold tracking-[-0.04em] text-ink leading-[1.08]">
-            Controlled document approval.{" "}
+            Govern Documents with Confidence.{" "}
             <br className="hidden sm:inline" />
             <MagneticText
               text="Zero shortcuts."
               hoverText="Zero shortcuts."
               circleBgClass="bg-[#F0B429]"
-              circleTextClass="text-[#08090a]"
-              textClassName="text-[clamp(36px,4.5vw,58px)] font-semibold tracking-[-0.04em] leading-[1.08]"
+              circleTextClass="text-[#08090a] mt-5"
+              textClassName="text-[clamp(36px,4.5vw,58px)] font-semibold tracking-[-0.04em] leading-[1.08] mt-5"
             />
           </h1>
-
+          
           {/* Subtitle */}
           <p className="text-[17px] sm:text-[18px] text-ink-muted max-w-[560px] leading-relaxed">
             ElevateFlow guarantees strict document lifecycle management. Every edit, approval, and state transition is verified server-side with optimistic concurrency and immutable audit logging.

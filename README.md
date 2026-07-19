@@ -185,14 +185,4 @@ pnpm build
 
 ## 📁 Key Documentation References
 
-- [`DESIGN.md`](./DESIGN.md) — **Engineering Design Note (Show Your Thinking)** & Visual Design Tokens Specification
-- [`docs/PRD.md`](./docs/PRD.md) — Product Requirements & User Stories
-- [`docs/architecture.md`](./docs/architecture.md) — Detailed System Architecture & Trust Boundaries
-- [`docs/db.md`](./docs/db.md) — Database Schema & Concurrency Design
-- [`docs/Rules.md`](./docs/Rules.md) — Engineering Rules & Invariants Matrix
-- [`DESIGN.md`](./DESIGN.md) — Design System Tokens & Component Specifications
-- [`AGENTS.md`](./AGENTS.md) — AI SWE Contract Invariants
-
----
-
-*Built with strict adherence to software engineering correctness. Zero shortcuts.*
+- [`DESIGN.md`](./DESIGN.md) — **Engineering Design Note (Show Your Thinking)** 
