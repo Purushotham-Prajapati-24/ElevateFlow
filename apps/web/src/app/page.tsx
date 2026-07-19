@@ -70,7 +70,7 @@ export default function Home() {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a
-              href="https://github.com"
+              href="https://github.com/Purushotham-Prajapati-24/ElevateFlow"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-surface-2 text-ink text-[15px] font-semibold border border-hairline-strong hover:bg-surface-3 transition-theme"
