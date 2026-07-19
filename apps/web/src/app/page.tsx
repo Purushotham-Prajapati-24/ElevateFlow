@@ -1,13 +1,34 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Shield, GitBranch, FileCheck, CheckCircle2, Lock, History, UserCheck } from "lucide-react";
 import { MagneticText } from "@/components/ui/morphing-cursor";
 import CardSwap, { Card } from "@/components/ui/card-swap";
 import BorderGlow from "@/components/ui/border-glow";
 import { ThemeToggle } from "@/components/theme-toggle";
+import TextLoader from "@/components/ui/text-loader";
 
 export default function Home() {
+  const [loadingFinished, setLoadingFinished] = useState(false);
+
   return (
-    <div className="relative min-h-screen flex flex-col hero-glow overflow-x-hidden">
+    <>
+      {!loadingFinished && (
+        <TextLoader
+          text="Elevate Flow"
+          gradientColors={["#f0b429", "#e5a100", "#f59e0b", "#fbbf24"]}
+          duration={{ slideUp: 0.5, reveal: 0.6, slideDown: 0.5 }}
+          delays={{ stagger: 0, betweenAnimations: 0.2, beforeSlideDown: 0.35 }}
+          onComplete={() => setLoadingFinished(true)}
+        />
+      )}
+
+      <div
+        className={`relative min-h-screen flex flex-col hero-glow overflow-x-hidden transition-all duration-700 ease-out ${
+          loadingFinished ? "opacity-100 scale-100 blur-0" : "opacity-0 scale-[0.98] blur-sm"
+        }`}
+      >
       {/* ── Top Navigation ── */}
       <header className="border-b border-hairline bg-canvas/80 backdrop-blur-xl sticky top-0 z-50 px-6 sm:px-8 h-20 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -265,6 +286,7 @@ export default function Home() {
         </span>
       </footer>
     </div>
+    </>
   );
 }
 
