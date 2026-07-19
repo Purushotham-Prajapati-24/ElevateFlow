@@ -7,14 +7,14 @@ import { z } from "zod";
 export const createDocumentSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(1, "Title is required")
-    .max(500, "Title cannot exceed 500 characters")
-    .trim(),
+    .max(500, "Title cannot exceed 500 characters"),
   body: z
     .string()
+    .trim()
     .min(1, "Body is required")
-    .max(50000, "Body cannot exceed 50,000 characters")
-    .trim(),
+    .max(50000, "Body cannot exceed 50,000 characters"),
 });
 
 export type CreateDocumentInput = z.infer<typeof createDocumentSchema>;
@@ -26,14 +26,14 @@ export type CreateDocumentInput = z.infer<typeof createDocumentSchema>;
 export const editDocumentSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(1, "Title is required")
-    .max(500, "Title cannot exceed 500 characters")
-    .trim(),
+    .max(500, "Title cannot exceed 500 characters"),
   body: z
     .string()
+    .trim()
     .min(1, "Body is required")
-    .max(50000, "Body cannot exceed 50,000 characters")
-    .trim(),
+    .max(50000, "Body cannot exceed 50,000 characters"),
   version: z.number().int().positive("Version must be a positive integer"),
 });
 
@@ -46,9 +46,9 @@ export type EditDocumentInput = z.infer<typeof editDocumentSchema>;
 export const rejectDocumentSchema = z.object({
   comment: z
     .string()
+    .trim()
     .min(1, "Rejection comment is required")
-    .max(2000, "Comment cannot exceed 2,000 characters")
-    .trim(),
+    .max(2000, "Comment cannot exceed 2,000 characters"),
   version: z.number().int().positive("Version must be a positive integer"),
 });
 

@@ -41,3 +41,5 @@ drizzle/meta/
 .agents
 .design
 docs
+testimg
+tests  

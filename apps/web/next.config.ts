@@ -7,9 +7,6 @@ const nextConfig: NextConfig = {
     "@elevateflow/validators",
     "@elevateflow/ui",
   ],
-  experimental: {
-    typedRoutes: true,
-  },
 };
 
 export default nextConfig;

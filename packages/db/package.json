@@ -17,12 +17,14 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/seed.ts",
+    "db:seed:documents": "tsx src/seed-documents.ts",
     "db:studio": "drizzle-kit studio",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "drizzle-orm": "^0.44",
     "postgres": "^3.4",
+    "better-auth": "^1.1.18",
     "@elevateflow/types": "workspace:*"
   },
   "devDependencies": {
