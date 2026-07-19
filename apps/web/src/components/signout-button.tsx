@@ -16,10 +16,11 @@ export function SignOutButton() {
   return (
     <button
       onClick={handleSignOut}
-      className="p-1.5 rounded-lg text-ink-subtle hover:text-ink hover:bg-surface-2 transition-theme"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-medium text-ink-muted hover:text-white hover:bg-error transition-theme group border border-hairline hover:border-error"
       aria-label="Sign out"
     >
-      <LogOut className="w-4 h-4" />
+      <LogOut className="w-3.5 h-3.5 text-ink-subtle group-hover:text-white transition-theme" />
+      <span>Sign out</span>
     </button>
   );
 }

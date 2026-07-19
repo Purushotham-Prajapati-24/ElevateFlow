@@ -181,9 +181,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="eyebrow text-ink-subtle text-center">
-          Strict role authorization enabled
-        </div>
       </div>
     </div>
   );

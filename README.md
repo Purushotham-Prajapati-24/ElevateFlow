@@ -145,11 +145,12 @@ NODE_ENV=development
 docker-compose up -d
 ```
 
-### Step 4: Run Migrations & Seed Users
+### Step 4: Run Migrations & Seed Users & Documents
 
 ```bash
 pnpm db:migrate
 pnpm db:seed
+pnpm db:seed:documents
 ```
 
 ### Step 5: Start Development Server
@@ -164,11 +165,14 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🧪 Verification & Testing
 
-ElevateFlow includes automated test suites covering state machine transitions, permission rules, Zod validators, and production build integrity.
+ElevateFlow includes automated test suites covering state machine transitions, permission rules, Zod validators, security audit verification, and production build integrity.
 
 ```bash
 # Run all Vitest unit and integration test suites
 pnpm test
+
+# Run full 45-point security & workflow audit test suite
+node tests/security-audit.js
 
 # Run strict monorepo TypeScript check across all packages
 pnpm typecheck
@@ -181,6 +185,7 @@ pnpm build
 
 ## 📁 Key Documentation References
 
+- [`DESIGN.md`](./DESIGN.md) — **Engineering Design Note (Show Your Thinking)** & Visual Design Tokens Specification
 - [`docs/PRD.md`](./docs/PRD.md) — Product Requirements & User Stories
 - [`docs/architecture.md`](./docs/architecture.md) — Detailed System Architecture & Trust Boundaries
 - [`docs/db.md`](./docs/db.md) — Database Schema & Concurrency Design
