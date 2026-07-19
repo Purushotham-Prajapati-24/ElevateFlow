@@ -18,6 +18,8 @@ export default function Home() {
         <TextLoader
           text="Elevate Flow"
           gradientColors={["#f0b429", "#e5a100", "#f59e0b", "#fbbf24"]}
+          duration={{ slideUp: 0.5, reveal: 0.6, slideDown: 0.5 }}
+          delays={{ stagger: 0, betweenAnimations: 0.2, beforeSlideDown: 0.35 }}
           onComplete={() => setLoadingFinished(true)}
         />
       )}

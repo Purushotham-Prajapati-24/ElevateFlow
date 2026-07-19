@@ -35,9 +35,9 @@ const TextLoader: React.FC<TextLoaderProps> = ({
     slideDown: 0.6,
   },
   delays = {
-    stagger: 0.05,
-    betweenAnimations: 0.3,
-    beforeSlideDown: 0.5,
+    stagger: 0,
+    betweenAnimations: 0.2,
+    beforeSlideDown: 0.4,
   },
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
