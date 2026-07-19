@@ -2,6 +2,7 @@
 
 import { signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 export function SignOutButton() {
   const router = useRouter();
@@ -15,9 +16,10 @@ export function SignOutButton() {
   return (
     <button
       onClick={handleSignOut}
-      className="text-xs font-mono text-[#a1a1aa] hover:text-[#f43f5e] transition-colors border border-[#27272a] px-2.5 py-1 rounded bg-[#18181b]"
+      className="p-1.5 rounded-lg text-ink-subtle hover:text-ink hover:bg-surface-2 transition-theme"
+      aria-label="Sign out"
     >
-      Sign Out
+      <LogOut className="w-4 h-4" />
     </button>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 export default function NewDocumentPage() {
   const router = useRouter();
@@ -42,20 +43,23 @@ export default function NewDocumentPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#27272a] pb-4">
+      <div className="flex items-center justify-between border-b border-hairline pb-4">
         <div>
           <Link
             href="/documents"
-            className="text-xs font-mono text-[#a1a1aa] hover:text-[#fafafa] transition-colors mb-1 inline-block"
+            className="inline-flex items-center gap-1.5 text-[13px] text-ink-muted hover:text-ink transition-theme mb-1"
           >
-            ← Back to Documents
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to documents
           </Link>
-          <h1 className="text-xl font-bold text-[#fafafa]">Create New Draft</h1>
+          <h1 className="font-display text-[20px] font-semibold tracking-tight text-ink">
+            Create new draft
+          </h1>
         </div>
       </div>
 
       {error && (
-        <div className="p-3 text-xs bg-[#450a0a] border border-[#7f1d1d] text-[#fca5a5] rounded-md font-medium">
+        <div className="p-3 text-[12px] bg-error-bg border border-error/20 text-error rounded-lg font-medium">
           {error}
         </div>
       )}
@@ -63,11 +67,11 @@ export default function NewDocumentPage() {
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#18181b] border border-[#27272a] rounded-xl p-6 space-y-6 shadow-2xl"
+        className="card-highlight bg-surface-1 border border-hairline rounded-[10px] p-6 space-y-5"
       >
         <div>
-          <label className="block text-xs font-mono uppercase tracking-wider text-[#a1a1aa] mb-2">
-            Document Title <span className="text-[#f59e0b]">*</span>
+          <label className="eyebrow text-ink-muted mb-1.5 block">
+            Document title <span className="text-primary">*</span>
           </label>
           <input
             type="text"
@@ -75,37 +79,44 @@ export default function NewDocumentPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Q3 System Architecture & Zero-Trust Guidelines"
-            className="w-full px-4 py-2.5 bg-[#09090b] border border-[#27272a] focus:border-[#f59e0b] focus:outline-none rounded-md text-sm text-[#fafafa] placeholder-[#52525b] transition-colors"
+            className="w-full px-3 py-2.5 bg-surface-2 border border-hairline focus:border-hairline-focus focus:outline-none rounded-lg text-[14px] text-ink placeholder-ink-disabled transition-theme"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-mono uppercase tracking-wider text-[#a1a1aa] mb-2">
-            Document Content <span className="text-[#f59e0b]">*</span>
+          <label className="eyebrow text-ink-muted mb-1.5 block">
+            Document content <span className="text-primary">*</span>
           </label>
           <textarea
             required
             rows={12}
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            placeholder="Write your document content here in detail..."
-            className="w-full p-4 bg-[#09090b] border border-[#27272a] focus:border-[#f59e0b] focus:outline-none rounded-md text-sm text-[#fafafa] placeholder-[#52525b] transition-colors resize-y leading-relaxed font-mono"
+            placeholder="Write your document content here in detail…"
+            className="w-full p-4 bg-surface-2 border border-hairline focus:border-hairline-focus focus:outline-none rounded-lg text-[14px] text-ink placeholder-ink-disabled transition-theme resize-y leading-relaxed"
           />
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#27272a]">
+        <div className="flex items-center justify-end gap-2 pt-2 border-t border-hairline">
           <Link
             href="/documents"
-            className="px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] text-[#fafafa] text-xs font-medium rounded-md transition-colors"
+            className="px-4 py-2 bg-surface-3 hover:bg-surface-4 text-ink text-[13px] font-medium rounded-lg transition-theme"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-5 py-2 bg-[#f59e0b] hover:bg-[#fbbf24] disabled:opacity-50 text-[#09090b] text-xs font-semibold rounded-md transition-colors shadow-md shadow-[#f59e0b]/10"
+            className="px-5 py-2 bg-primary hover:bg-primary-hover disabled:opacity-50 text-on-primary text-[13px] font-semibold rounded-lg transition-theme flex items-center gap-1.5"
           >
-            {isSubmitting ? "Creating Draft..." : "Save Initial Draft"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                Creating…
+              </>
+            ) : (
+              "Save initial draft"
+            )}
           </button>
         </div>
       </form>

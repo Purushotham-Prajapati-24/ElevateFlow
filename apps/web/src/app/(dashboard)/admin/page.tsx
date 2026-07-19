@@ -4,6 +4,7 @@ import { eq, desc } from "drizzle-orm";
 import Link from "next/link";
 import { StatusBadge } from "@/components/status-badge";
 import { redirect } from "next/navigation";
+import { Lock, ArrowRight } from "lucide-react";
 
 export default async function AdminConsolePage() {
   const user = await getCurrentUser();
@@ -12,11 +13,13 @@ export default async function AdminConsolePage() {
 
   if (user.role !== "admin") {
     return (
-      <div className="p-12 text-center bg-[#18181b] border border-[#27272a] rounded-xl space-y-3">
-        <div className="text-3xl">🔒</div>
-        <h2 className="text-base font-semibold text-[#fafafa]">Admin Console Access Restricted</h2>
-        <p className="text-xs text-[#a1a1aa] max-w-sm mx-auto">
-          The Admin Console is restricted to administrators only.
+      <div className="p-12 text-center bg-surface-1 border border-hairline rounded-[10px] space-y-3">
+        <Lock className="w-8 h-8 text-ink-subtle mx-auto" />
+        <h2 className="text-[15px] font-medium text-ink">
+          Admin console access restricted
+        </h2>
+        <p className="text-[13px] text-ink-muted max-w-sm mx-auto">
+          The admin console is restricted to administrators only.
         </p>
       </div>
     );
@@ -43,62 +46,68 @@ export default async function AdminConsolePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-[#27272a] pb-5">
+      <div className="border-b border-hairline pb-5">
         <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold tracking-tight text-[#fafafa]">
-            Admin Console
+          <h1 className="font-display text-[22px] font-semibold tracking-tight text-ink">
+            Admin console
           </h1>
-          <span className="font-mono text-xs px-2 py-0.5 rounded bg-[#451a03] text-[#f59e0b] border border-[#78350f]">
-            SYSTEM OVERVIEW
+          <span className="eyebrow px-2 py-0.5 rounded bg-primary-muted/30 text-primary border border-primary/20">
+            System Overview
           </span>
         </div>
-        <p className="text-xs text-[#a1a1aa] mt-1 font-mono">
+        <p className="text-[13px] text-ink-muted mt-1">
           Full system audit and administration across all {allDocs.length} documents.
         </p>
       </div>
 
-      <div className="bg-[#18181b] border border-[#27272a] rounded-xl overflow-hidden shadow-xl">
+      {/* Table container */}
+      <div className="bg-surface-1 border border-hairline rounded-[10px] overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[#1f1f23] border-b border-[#27272a] text-[#a1a1aa] font-mono uppercase tracking-wider">
+          <table className="w-full text-left text-[13px]">
+            {/* Signature xAI Mono Caps Header */}
+            <thead className="bg-surface-2 border-b border-hairline text-ink-subtle eyebrow">
               <tr>
-                <th className="p-4">Document Title</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Author</th>
-                <th className="p-4">Version</th>
-                <th className="p-4">Updated</th>
-                <th className="p-4 text-right">Actions</th>
+                <th className="p-3.5 pl-4">Document Title</th>
+                <th className="p-3.5">Status</th>
+                <th className="p-3.5">Author</th>
+                <th className="p-3.5">Version</th>
+                <th className="p-3.5">Updated</th>
+                <th className="p-3.5 pr-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#27272a]/60">
+            <tbody className="divide-y divide-hairline/60">
               {allDocs.map((doc) => (
-                <tr key={doc.id} className="hover:bg-[#1f1f23]/60 transition-colors">
-                  <td className="p-4 font-medium text-[#fafafa]">
+                <tr
+                  key={doc.id}
+                  className="hover:bg-surface-2/60 transition-theme"
+                >
+                  <td className="p-3.5 pl-4 font-medium text-ink">
                     <Link
                       href={`/documents/${doc.id}` as any}
-                      className="hover:text-[#f59e0b] transition-colors"
+                      className="hover:text-primary transition-theme"
                     >
                       {doc.title}
                     </Link>
                   </td>
-                  <td className="p-4">
+                  <td className="p-3.5">
                     <StatusBadge status={doc.status as any} />
                   </td>
-                  <td className="p-4 font-mono text-[#a1a1aa]">
+                  <td className="p-3.5 font-mono text-[12px] text-ink-muted">
                     {doc.authorName}
                   </td>
-                  <td className="p-4 font-mono text-[#f59e0b]">
+                  <td className="p-3.5 font-mono text-[12px] text-primary">
                     v{doc.version}
                   </td>
-                  <td className="p-4 font-mono text-[#71717a]">
+                  <td className="p-3.5 font-mono text-[12px] text-ink-subtle">
                     {new Date(doc.updatedAt).toLocaleDateString()}
                   </td>
-                  <td className="p-4 text-right font-mono">
+                  <td className="p-3.5 pr-4 text-right font-mono text-[12px]">
                     <Link
                       href={`/documents/${doc.id}` as any}
-                      className="text-[#f59e0b] hover:underline"
+                      className="inline-flex items-center gap-1 text-primary hover:underline"
                     >
-                      Inspect & Manage →
+                      Inspect & manage
+                      <ArrowRight className="w-3 h-3" />
                     </Link>
                   </td>
                 </tr>

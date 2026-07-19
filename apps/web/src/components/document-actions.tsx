@@ -6,6 +6,16 @@ import Link from "next/link";
 import { RejectModal } from "./reject-modal";
 import type { DocumentStatus } from "@elevateflow/types";
 import type { CurrentUser } from "@/lib/session";
+import {
+  Pencil,
+  Send,
+  RotateCcw,
+  Check,
+  XCircle,
+  Globe,
+  Archive,
+  Loader2,
+} from "lucide-react";
 
 interface DocumentActionsProps {
   documentId: string;
@@ -29,7 +39,10 @@ export function DocumentActions({
   const [error, setError] = useState<string | null>(null);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
 
-  const handleAction = async (endpoint: string, payload: Record<string, unknown> = {}) => {
+  const handleAction = async (
+    endpoint: string,
+    payload: Record<string, unknown> = {}
+  ) => {
     setError(null);
     setIsLoading(true);
 
@@ -60,88 +73,100 @@ export function DocumentActions({
     await handleAction("reject", { comment });
   };
 
-  const isAuthor = currentUser.role === "author" && authorId === currentUser.id;
-  const isReviewerNotAuthor = currentUser.role === "reviewer" && authorId !== currentUser.id;
+  const isAuthor =
+    currentUser.role === "author" && authorId === currentUser.id;
+  const isReviewerNotAuthor =
+    currentUser.role === "reviewer" && authorId !== currentUser.id;
   const isAdmin = currentUser.role === "admin";
 
   return (
     <div className="space-y-2">
       {error && (
-        <div className="p-2 text-xs bg-[#450a0a] border border-[#7f1d1d] text-[#fca5a5] rounded text-right">
+        <div className="p-2 text-[12px] bg-error-bg border border-error/20 text-error rounded-lg text-right">
           {error}
         </div>
       )}
 
       <div className="flex flex-wrap items-center gap-2">
-        {/* Author Actions */}
+        {/* Author: Edit */}
         {isAuthor && (status === "draft" || status === "rejected") && (
           <Link
             href={`/documents/${documentId}/edit` as any}
-            className="px-3 py-1.5 bg-[#27272a] hover:bg-[#3f3f46] text-[#fafafa] text-xs font-medium rounded transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-3 hover:bg-surface-4 text-ink text-[13px] font-medium rounded-lg transition-theme"
           >
-            ✏️ Edit
+            <Pencil className="w-3.5 h-3.5" />
+            Edit
           </Link>
         )}
 
+        {/* Author: Submit */}
         {isAuthor && status === "draft" && (
-          <button
+          <ActionButton
             onClick={() => handleAction("submit")}
-            disabled={isLoading}
-            className="px-3 py-1.5 bg-[#3b82f6] hover:bg-[#2563eb] text-white text-xs font-medium rounded transition-colors shadow-sm"
-          >
-            {isLoading ? "Submitting..." : "Submit for Review"}
-          </button>
+            isLoading={isLoading}
+            icon={Send}
+            label="Submit for review"
+            loadingLabel="Submitting…"
+            className="bg-state-submitted hover:bg-state-submitted/80 text-white"
+          />
         )}
 
+        {/* Author: Reopen from rejected */}
         {isAuthor && status === "rejected" && (
-          <button
+          <ActionButton
             onClick={() => handleAction("reopen")}
-            disabled={isLoading}
-            className="px-3 py-1.5 bg-[#f59e0b] hover:bg-[#fbbf24] text-[#09090b] text-xs font-medium rounded transition-colors"
-          >
-            {isLoading ? "Reopening..." : "Reopen as Draft"}
-          </button>
+            isLoading={isLoading}
+            icon={RotateCcw}
+            label="Reopen as draft"
+            loadingLabel="Reopening…"
+            className="bg-primary hover:bg-primary-hover text-on-primary"
+          />
         )}
 
-        {/* Reviewer Actions (Must NOT be own document) */}
+        {/* Reviewer: Approve */}
         {isReviewerNotAuthor && status === "submitted" && (
           <>
-            <button
+            <ActionButton
               onClick={() => handleAction("approve")}
-              disabled={isLoading}
-              className="px-3 py-1.5 bg-[#10b981] hover:bg-[#059669] text-white text-xs font-medium rounded transition-colors"
-            >
-              {isLoading ? "Approving..." : "Approve Proposal"}
-            </button>
-            <button
+              isLoading={isLoading}
+              icon={Check}
+              label="Approve"
+              loadingLabel="Approving…"
+              className="bg-state-approved hover:bg-state-approved/80 text-white"
+            />
+            <ActionButton
               onClick={() => setIsRejectModalOpen(true)}
-              disabled={isLoading}
-              className="px-3 py-1.5 bg-[#f43f5e] hover:bg-[#e11d48] text-white text-xs font-medium rounded transition-colors"
-            >
-              Reject Proposal
-            </button>
+              isLoading={isLoading}
+              icon={XCircle}
+              label="Reject"
+              loadingLabel="Reject"
+              className="bg-state-rejected hover:bg-state-rejected/80 text-white"
+            />
           </>
         )}
 
+        {/* Reviewer/Admin: Publish */}
         {(isReviewerNotAuthor || isAdmin) && status === "approved" && (
-          <button
+          <ActionButton
             onClick={() => handleAction("publish")}
-            disabled={isLoading}
-            className="px-3 py-1.5 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white text-xs font-medium rounded transition-colors"
-          >
-            {isLoading ? "Publishing..." : "Publish to Library"}
-          </button>
+            isLoading={isLoading}
+            icon={Globe}
+            label="Publish"
+            loadingLabel="Publishing…"
+            className="bg-state-published hover:bg-state-published/80 text-white"
+          />
         )}
 
-        {/* Admin Actions */}
+        {/* Admin: Archive */}
         {isAdmin && status !== "archived" && (
-          <button
+          <ActionButton
             onClick={() => handleAction("archive")}
-            disabled={isLoading}
-            className="px-3 py-1.5 bg-[#27272a] hover:bg-[#3f3f46] text-[#71717a] hover:text-[#f43f5e] text-xs font-mono rounded transition-colors"
-          >
-            Archive
-          </button>
+            isLoading={isLoading}
+            icon={Archive}
+            label="Archive"
+            loadingLabel="Archiving…"
+            className="bg-surface-3 hover:bg-surface-4 text-ink-subtle hover:text-state-rejected"
+          />
         )}
       </div>
 
@@ -152,5 +177,36 @@ export function DocumentActions({
         documentTitle={title}
       />
     </div>
+  );
+}
+
+function ActionButton({
+  onClick,
+  isLoading,
+  icon: Icon,
+  label,
+  loadingLabel,
+  className,
+}: {
+  onClick: () => void;
+  isLoading: boolean;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  loadingLabel: string;
+  className: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={isLoading}
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-theme disabled:opacity-50 ${className}`}
+    >
+      {isLoading ? (
+        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+      ) : (
+        <Icon className="w-3.5 h-3.5" />
+      )}
+      {isLoading ? loadingLabel : label}
+    </button>
   );
 }

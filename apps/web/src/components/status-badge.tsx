@@ -7,43 +7,31 @@ interface StatusBadgeProps {
 
 const STATUS_CONFIG: Record<
   DocumentStatus,
-  { label: string; bg: string; text: string; border: string }
+  { label: string; className: string }
 > = {
   draft: {
     label: "DRAFT",
-    bg: "bg-[#1e293b]",
-    text: "text-[#94a3b8]",
-    border: "border-[#334155]",
+    className: "bg-[#ff5530] text-white border border-[#ff5530]/80 shadow-xs",
   },
   submitted: {
     label: "SUBMITTED",
-    bg: "bg-[#1e3a5f]",
-    text: "text-[#3b82f6]",
-    border: "border-[#1d4ed8]",
+    className: "bg-[#1456f0] text-white border border-[#1456f0]/80 shadow-xs",
   },
   approved: {
     label: "APPROVED",
-    bg: "bg-[#064e3b]",
-    text: "text-[#10b981]",
-    border: "border-[#047857]",
+    className: "bg-[#10b981] text-white border border-[#10b981]/80 shadow-xs",
   },
   rejected: {
     label: "REJECTED",
-    bg: "bg-[#4c0519]",
-    text: "text-[#f43f5e]",
-    border: "border-[#be123c]",
+    className: "bg-[#f43f5e] text-white border border-[#f43f5e]/80 shadow-xs",
   },
   published: {
     label: "PUBLISHED",
-    bg: "bg-[#2e1065]",
-    text: "text-[#8b5cf6]",
-    border: "border-[#6d28d9]",
+    className: "bg-[#a855f7] text-white border border-[#a855f7]/80 shadow-xs",
   },
   archived: {
     label: "ARCHIVED",
-    bg: "bg-[#27272a]",
-    text: "text-[#71717a]",
-    border: "border-[#3f3f46]",
+    className: "bg-slate-700 text-white border border-slate-600 shadow-xs",
   },
 };
 
@@ -52,9 +40,9 @@ export function StatusBadge({ status, className = "" }: StatusBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full font-mono text-[11px] font-medium tracking-wider border ${config.bg} ${config.text} ${config.border} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-extrabold tracking-wider ${config.className} ${className}`}
     >
-      <span className="w-1.5 h-1.5 rounded-full bg-current mr-1.5 opacity-80" />
+      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-90" />
       {config.label}
     </span>
   );

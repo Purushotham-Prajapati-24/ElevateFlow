@@ -4,33 +4,39 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const SEEDED_PERSONAS = [
   {
     role: "Author",
     name: "Alice",
     email: "alice@elevateflow.dev",
-    badgeColor: "bg-[#1e293b] text-[#94a3b8] border-[#334155]",
+    color: "text-state-draft",
+    bg: "bg-state-draft-bg",
   },
   {
     role: "Reviewer",
     name: "Bob",
     email: "bob@elevateflow.dev",
-    badgeColor: "bg-[#1e3a5f] text-[#3b82f6] border-[#1d4ed8]",
+    color: "text-state-submitted",
+    bg: "bg-state-submitted-bg",
   },
   {
     role: "Admin",
     name: "Charlie",
     email: "charlie@elevateflow.dev",
-    badgeColor: "bg-[#451a03] text-[#f59e0b] border-[#78350f]",
+    color: "text-primary",
+    bg: "bg-primary-muted/30",
   },
   {
     role: "Viewer",
     name: "Vera",
     email: "vera@elevateflow.dev",
-    badgeColor: "bg-[#27272a] text-[#71717a] border-[#3f3f46]",
+    color: "text-ink-subtle",
+    bg: "bg-surface-3",
   },
-];
+] as const;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -51,7 +57,10 @@ export default function LoginPage() {
       });
 
       if (signInError) {
-        setError(signInError.message || "Invalid credentials. Please check your email and password.");
+        setError(
+          signInError.message ||
+            "Invalid credentials. Please check your email and password."
+        );
         setIsLoading(false);
         return;
       }
@@ -59,7 +68,11 @@ export default function LoginPage() {
       router.push("/documents" as any);
       router.refresh();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Authentication failed. Please try again.");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Authentication failed. Please try again."
+      );
       setIsLoading(false);
     }
   };
@@ -71,39 +84,37 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#09090b] px-4 py-12 hero-glow">
-      <div className="w-full max-w-md space-y-6">
-        {/* Brand header */}
-        <div className="text-center space-y-2">
+    <div className="min-h-screen flex items-center justify-center bg-canvas px-4 py-12 hero-glow">
+      <div className="w-full max-w-[400px] space-y-6">
+        {/* Brand */}
+        <div className="flex items-center justify-between px-1">
           <Link href="/" className="inline-block">
-            <span className="font-bold text-2xl tracking-tight text-[#fafafa]">
-              Elevate<span className="text-[#f59e0b]">Flow</span>
+            <span className="font-display text-[26px] sm:text-[32px] font-extrabold tracking-tight text-ink">
+              Elevate<span className="text-primary">Flow</span>
             </span>
           </Link>
-          <div className="font-mono text-xs uppercase tracking-widest text-[#a1a1aa]">
-            AUTHENTICATION PORTAL
-          </div>
+          <ThemeToggle />
         </div>
 
         {/* Card */}
-        <div className="bg-[#18181b] border border-[#27272a] rounded-xl p-6 shadow-2xl space-y-6">
-          <div className="border-b border-[#27272a] pb-4">
-            <h2 className="text-lg font-semibold text-[#fafafa]">Sign In</h2>
-            <p className="text-xs text-[#a1a1aa]">
-              Enter your credentials to access the document workflow engine.
+        <div className="card-highlight bg-surface-1 border border-hairline rounded-xl p-6 space-y-5">
+          <div className="border-b border-hairline pb-4">
+            <h2 className="text-[16px] font-semibold text-ink">Sign in</h2>
+            <p className="text-[13px] text-ink-muted mt-1">
+              Enter credentials to access the workflow engine.
             </p>
           </div>
 
           {error && (
-            <div className="p-3 text-xs bg-[#450a0a] border border-[#7f1d1d] text-[#fca5a5] rounded-md font-medium">
+            <div className="p-3 text-[12px] bg-error-bg border border-error/20 text-error rounded-lg font-medium">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider text-[#a1a1aa] mb-1">
-                Email Address
+              <label className="eyebrow text-ink-muted mb-1.5 block">
+                Email address
               </label>
               <input
                 type="email"
@@ -111,12 +122,12 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="author@elevateflow.dev"
-                className="w-full px-3 py-2 bg-[#09090b] border border-[#27272a] focus:border-[#f59e0b] focus:outline-none rounded-md text-sm text-[#fafafa] placeholder-[#52525b] transition-colors"
+                className="w-full px-3 py-2 bg-surface-2 border border-hairline focus:border-hairline-focus focus:outline-none rounded-lg text-[14px] text-ink placeholder-ink-disabled transition-theme"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider text-[#a1a1aa] mb-1">
+              <label className="eyebrow text-ink-muted mb-1.5 block">
                 Password
               </label>
               <input
@@ -125,23 +136,30 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full px-3 py-2 bg-[#09090b] border border-[#27272a] focus:border-[#f59e0b] focus:outline-none rounded-md text-sm text-[#fafafa] placeholder-[#52525b] transition-colors"
+                className="w-full px-3 py-2 bg-surface-2 border border-hairline focus:border-hairline-focus focus:outline-none rounded-lg text-[14px] text-ink placeholder-ink-disabled transition-theme"
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 px-4 bg-[#f59e0b] hover:bg-[#fbbf24] disabled:opacity-50 text-[#09090b] font-medium text-sm rounded-md transition-colors shadow-md shadow-[#f59e0b]/10 flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 bg-primary hover:bg-primary-hover disabled:opacity-50 text-on-primary font-medium text-[14px] rounded-lg transition-theme flex items-center justify-center gap-2"
             >
-              {isLoading ? "Authenticating..." : "Sign In to Engine"}
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  Authenticating…
+                </>
+              ) : (
+                "Sign in"
+              )}
             </button>
           </form>
 
-          {/* Quick persona select helper for demo/testing */}
-          <div className="border-t border-[#27272a] pt-4 space-y-3">
-            <div className="text-[11px] font-mono uppercase tracking-wider text-[#71717a] text-center">
-              Quick Persona Fill (Dev Mode)
+          {/* Persona selector */}
+          <div className="border-t border-hairline pt-4 space-y-3">
+            <div className="eyebrow text-ink-subtle text-center">
+              Quick persona fill
             </div>
             <div className="grid grid-cols-2 gap-2">
               {SEEDED_PERSONAS.map((p) => (
@@ -149,18 +167,22 @@ export default function LoginPage() {
                   key={p.email}
                   type="button"
                   onClick={() => handleSelectPersona(p.email)}
-                  className={`p-2 rounded border text-left text-xs transition-colors hover:brightness-125 ${p.badgeColor}`}
+                  className={`${p.bg} p-2.5 rounded-lg text-left transition-theme hover:brightness-110 border border-hairline`}
                 >
-                  <div className="font-semibold text-current">{p.name}</div>
-                  <div className="text-[10px] opacity-80">{p.role}</div>
+                  <div className={`text-[13px] font-medium ${p.color}`}>
+                    {p.name}
+                  </div>
+                  <div className="eyebrow text-[10px] text-ink-subtle mt-0.5">
+                    {p.role}
+                  </div>
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="text-center text-xs text-[#71717a] font-mono">
-          Strict Role Authorization Enabled — AGENTS.md Contract
+        <div className="eyebrow text-ink-subtle text-center">
+          Strict role authorization enabled
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft, Loader2, RefreshCw } from "lucide-react";
 import type { Document } from "@elevateflow/types";
 
 interface EditFormProps {
@@ -38,7 +39,9 @@ export function EditForm({ initialDoc }: EditFormProps) {
 
       if (res.status === 409) {
         setIsConflict(true);
-        setError("Conflict: Document has been updated by another user or session. Please refresh to load the latest version.");
+        setError(
+          "Conflict: Document has been updated by another user or session. Please refresh to load the latest version."
+        );
         setIsSubmitting(false);
         return;
       }
@@ -59,77 +62,93 @@ export function EditForm({ initialDoc }: EditFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b border-[#27272a] pb-4">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-hairline pb-4">
         <div>
           <Link
             href={`/documents/${initialDoc.id}` as any}
-            className="text-xs font-mono text-[#a1a1aa] hover:text-[#fafafa] transition-colors mb-1 inline-block"
+            className="inline-flex items-center gap-1.5 text-[13px] text-ink-muted hover:text-ink transition-theme mb-1"
           >
-            ← Back to Document Detail
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to document detail
           </Link>
-          <h1 className="text-xl font-bold text-[#fafafa]">
-            Edit Document (v{initialDoc.version})
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="font-display text-[20px] font-semibold tracking-tight text-ink">
+              Edit document
+            </h1>
+            <span className="eyebrow px-2 py-0.5 rounded-md bg-surface-2 border border-hairline text-primary">
+              v{initialDoc.version}
+            </span>
+          </div>
         </div>
       </div>
 
       {error && (
-        <div className="p-4 bg-[#450a0a] border border-[#7f1d1d] text-[#fca5a5] rounded-md text-xs space-y-2">
-          <p className="font-semibold">{error}</p>
+        <div className="p-4 bg-error-bg border border-error/20 text-error rounded-lg text-[13px] space-y-2 font-medium">
+          <p>{error}</p>
           {isConflict && (
             <button
               onClick={() => router.refresh()}
-              className="px-3 py-1.5 bg-[#7f1d1d] hover:bg-[#991b1b] text-white font-mono rounded transition-colors text-[11px]"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-error/20 hover:bg-error/30 text-error rounded-md text-[12px] font-mono transition-theme"
             >
-              🔄 Refresh Page to Reload Latest Version
+              <RefreshCw className="w-3.5 h-3.5" />
+              Refresh to load latest version
             </button>
           )}
         </div>
       )}
 
+      {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#18181b] border border-[#27272a] rounded-xl p-6 space-y-6 shadow-2xl"
+        className="card-highlight bg-surface-1 border border-hairline rounded-[10px] p-6 space-y-5"
       >
         <div>
-          <label className="block text-xs font-mono uppercase tracking-wider text-[#a1a1aa] mb-2">
-            Document Title
+          <label className="eyebrow text-ink-muted mb-1.5 block">
+            Document title
           </label>
           <input
             type="text"
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2.5 bg-[#09090b] border border-[#27272a] focus:border-[#f59e0b] focus:outline-none rounded-md text-sm text-[#fafafa] transition-colors"
+            className="w-full px-3 py-2.5 bg-surface-2 border border-hairline focus:border-hairline-focus focus:outline-none rounded-lg text-[14px] text-ink transition-theme"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-mono uppercase tracking-wider text-[#a1a1aa] mb-2">
-            Document Content
+          <label className="eyebrow text-ink-muted mb-1.5 block">
+            Document content
           </label>
           <textarea
             required
             rows={12}
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            className="w-full p-4 bg-[#09090b] border border-[#27272a] focus:border-[#f59e0b] focus:outline-none rounded-md text-sm text-[#fafafa] transition-colors resize-y leading-relaxed font-mono"
+            className="w-full p-4 bg-surface-2 border border-hairline focus:border-hairline-focus focus:outline-none rounded-lg text-[14px] text-ink transition-theme resize-y leading-relaxed"
           />
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#27272a]">
+        <div className="flex items-center justify-end gap-2 pt-2 border-t border-hairline">
           <Link
             href={`/documents/${initialDoc.id}` as any}
-            className="px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] text-[#fafafa] text-xs font-medium rounded-md transition-colors"
+            className="px-4 py-2 bg-surface-3 hover:bg-surface-4 text-ink text-[13px] font-medium rounded-lg transition-theme"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-5 py-2 bg-[#f59e0b] hover:bg-[#fbbf24] disabled:opacity-50 text-[#09090b] text-xs font-semibold rounded-md transition-colors shadow-md shadow-[#f59e0b]/10"
+            className="px-5 py-2 bg-primary hover:bg-primary-hover disabled:opacity-50 text-on-primary text-[13px] font-semibold rounded-lg transition-theme flex items-center gap-1.5"
           >
-            {isSubmitting ? "Saving Changes..." : "Save Modifications"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                Saving…
+              </>
+            ) : (
+              "Save modifications"
+            )}
           </button>
         </div>
       </form>
